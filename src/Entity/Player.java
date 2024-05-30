@@ -1,4 +1,5 @@
 package Entity;
+import Main.Game;
 import utils.LoadSave;
 
 import javax.imageio.ImageIO;
@@ -6,8 +7,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+
 import static utils.Constants.PlayerConstants.*;
 import static utils.LoadSave.playerAtlas;
+import static utils.Helpers.canMoveHere;
 
 public class Player  extends Entitty{
     private BufferedImage[][] Animations;
@@ -15,11 +19,16 @@ public class Player  extends Entitty{
     private int aniTick, aniIndex, aniSpeed=20;
     private int player_action=IDLE;
     private boolean kiri, kanan, atas, bawah;
-
+    private int[][] levelData;
     private boolean isPlayerMoving = false, isAttacking=false;
-    public Player(float x, float y, int width, int height) {
+    private int xOffset= (int) (22* Game.SCALES);
+    private int yOffset = (int) (4* Game.SCALES);
+    public Player(float x , float y, int width, int height, int[][] levelData) {
         super(x, y, width,height);
+        this.levelData = levelData;
         loadAnimations();
+        hitBox.width=20*Game.SCALES;
+        hitBox.height=28*Game.SCALES;
     }
     public void reset(){
         kiri = false;
@@ -28,31 +37,40 @@ public class Player  extends Entitty{
         bawah = false;
         isPlayerMoving=false;
     }
-    public void render(Graphics g){
-        g.drawImage(Animations[player_action][aniIndex], (int)x,(int) y,width,height,null);
-        drawHitbox(g);
+    public void render(Graphics g, int xOfflevelset, int yOfflevelSet){
+        g.drawImage(Animations[player_action][aniIndex], (int)hitBox.x - xOffset -xOfflevelset ,(int) hitBox.y -yOffset -yOfflevelSet,width,height,null);
+        drawHitbox(g, xOfflevelset, yOfflevelSet);
     }
 
     public void update(){
-        updateHitbox();
         updatePos();
         updatePlayerAction();
         updateAnimation();
     }
 public void updatePos(){
-        if (kiri && !kanan){
-            x-=velocity;
-            isPlayerMoving=true;
-        } else if (!kiri && kanan) {
-            x+=velocity;
-            isPlayerMoving=true;
+        isPlayerMoving=false;
+//        System.out.printf(Arrays.toString(new boolean[]{kiri, kanan, atas, bawah}));
+        if (!kiri&&!kanan&&!atas&&!bawah){
+            return;
         }
-        if (atas && !bawah){
-            y-=velocity;
-            isPlayerMoving=true;
 
+        float xSpeed=0,ySpeed=0;
+
+        if (kiri && !kanan){
+            xSpeed-=velocity;
+        } else if (!kiri && kanan) {
+            xSpeed+=velocity;
+        }
+
+        if (atas && !bawah){
+            ySpeed-=velocity;
         } else if (!atas && bawah) {
-            y+=velocity;
+            ySpeed+=velocity;
+        }
+
+        if (canMoveHere(hitBox.x +xSpeed,hitBox.y+ySpeed,  hitBox.width,hitBox.height,levelData)){
+            hitBox.y+=ySpeed;
+            hitBox.x+=xSpeed;
             isPlayerMoving=true;
         }
 }

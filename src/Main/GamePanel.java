@@ -21,17 +21,7 @@ public class GamePanel extends JPanel {
         this.game = game;
         addMouseListener(new MouseInput(this));
         setPanelSize();
-//        importImage();
     }
-
-//    private void importImage() {
-//        InputStream is = getClass().getResourceAsStream("/res/player_sprites.png");
-//        try {
-//            img = ImageIO.read(is);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     private void setPanelSize() {
         Dimension dimension = new Dimension(GAME_WIDTH,GAME_HEIGHT);
