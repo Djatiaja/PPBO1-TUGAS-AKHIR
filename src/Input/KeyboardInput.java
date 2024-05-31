@@ -1,7 +1,11 @@
 package Input;
 import Main.GamePanel;
+import utils.Helpers;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import static utils.Helpers.devMode;
 
 public class KeyboardInput implements KeyListener {
     private GamePanel gamePanel;
@@ -30,8 +34,17 @@ public class KeyboardInput implements KeyListener {
         if (e.getKeyCode() ==   KeyEvent.VK_D){
             gamePanel.getGame().getPlayer().setKanan(true);
         }
+        if (e.getKeyCode()== KeyEvent.VK_E){
+            gamePanel.getGame().getPlayer().getSpriteDataOnLocation();
+        }
 
-
+        if (e.getKeyCode()== KeyEvent.VK_Q){
+            if (devMode) {
+                Helpers.setDevMode(false);
+            }else {
+                Helpers.setDevMode(true);
+            };
+        }
     }
 
     @Override

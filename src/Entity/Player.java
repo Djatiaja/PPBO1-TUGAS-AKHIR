@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import static utils.Constants.PlayerConstants.*;
+import static utils.LoadSave.level_one_data;
 import static utils.LoadSave.playerAtlas;
 import static utils.Helpers.canMoveHere;
 
@@ -21,14 +22,14 @@ public class Player  extends Entitty{
     private boolean kiri, kanan, atas, bawah;
     private int[][] levelData;
     private boolean isPlayerMoving = false, isAttacking=false;
-    private int xOffset= (int) (22* Game.SCALES);
-    private int yOffset = (int) (4* Game.SCALES);
+    private int xOffset= (int) (25* Game.SCALES);
+    private int yOffset = (int) (22* Game.SCALES);
     public Player(float x , float y, int width, int height, int[][] levelData) {
         super(x, y, width,height);
         this.levelData = levelData;
         loadAnimations();
-        hitBox.width=20*Game.SCALES;
-        hitBox.height=28*Game.SCALES;
+        hitBox.width=14*Game.SCALES; //20
+        hitBox.height=10*Game.SCALES;//28
     }
     public void reset(){
         kiri = false;
@@ -109,7 +110,15 @@ public void updatePos(){
             }
             aniTick=0;
         }
+    }
 
+    public void getSpriteDataOnLocation(){
+        int xSprite = (int) Math.floor(hitBox.x / Game.TILES_SIZE);
+        int ySprite = (int) Math.floor(hitBox.y /Game.TILES_SIZE);
+//        System.out.println(ySprite);
+//        System.out.println(xSprite);
+
+        System.out.println(levelData[ySprite][xSprite]);
     }
 
     public void setAniIndex(int num){

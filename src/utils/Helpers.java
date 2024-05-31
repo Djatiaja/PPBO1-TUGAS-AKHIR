@@ -2,9 +2,13 @@ package utils;
 
 import Main.Game;
 
+import java.util.Arrays;
+
 public class Helpers {
-
-
+    public static boolean devMode=false;
+    public static void setDevMode(Boolean bool){
+        devMode=bool;
+    }
     public static boolean canMoveHere(float x, float y, float width,float height, int[][] levelData){
         if (!isSolid(x,y,levelData)){
             if (!isSolid(x+width,y+height, levelData)){
@@ -32,9 +36,11 @@ public class Helpers {
         float xIndex = x/Game.TILES_SIZE;
         float yIndex = y/Game.TILES_SIZE;
         int value = levelData[(int) yIndex][(int) xIndex];
-        if (value <= 48 && value!=11){
+        Integer notSoidSprite[]  = {9,63,41,37,36,35,44,13,41,45,9,409,28,63,405,432,8,459,40,64,14,10,434,435,436,62};
+//        System.out.println(Arrays.asList(notSoidSprite).contains(value));
+        if (Arrays.asList(notSoidSprite).contains(value)){
             return false;
         }
-        return false;
+        return !devMode;
     }
 }

@@ -14,6 +14,7 @@ public class LoadSave {
     public static final String levelAtlas="/res/tilemap_packed.png";
     public static final String level_one_data="/res/City_map_noFix13.png";
 
+
     private static int[] spawnCord;
 
     public static BufferedImage getAtlasSprite(String path) {
