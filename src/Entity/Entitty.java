@@ -27,10 +27,6 @@ public abstract class Entitty {
         g.setColor(Color.red);
         g.drawRect((int) hitBox.x -xleveloffset, (int) hitBox.y - ylevelOffset, (int) hitBox.width, (int) hitBox.height);
     }
-    public void updateHitbox(){
-        this.hitBox.y = (int) y;
-        this.hitBox.x = (int) x;
-    }
 
     public Rectangle2D.Float getHitBox() {
         return hitBox;

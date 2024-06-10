@@ -1,16 +1,11 @@
 package Entity;
 import Main.Game;
 import utils.LoadSave;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import static utils.Constants.PlayerConstants.*;
-import static utils.LoadSave.level_one_data;
 import static utils.LoadSave.playerAtlas;
 import static utils.Helpers.canMoveHere;
 
@@ -20,13 +15,15 @@ public class Player  extends Entitty{
     private int aniTick, aniIndex, aniSpeed=20;
     private int player_action=IDLE;
     private boolean kiri, kanan, atas, bawah;
-    private int[][] levelData;
+    private ArrayList<int[][]> levelDataList;
+    private int lastPlayerDirection = 1;
+    private int leftxOffset = 0;
     private boolean isPlayerMoving = false, isAttacking=false;
     private int xOffset= (int) (25* Game.SCALES);
     private int yOffset = (int) (22* Game.SCALES);
-    public Player(float x , float y, int width, int height, int[][] levelData) {
+    public Player(float x , float y, int width, int height, ArrayList<int[][]> levelDataList) {
         super(x, y, width,height);
-        this.levelData = levelData;
+        this.levelDataList = levelDataList;
         loadAnimations();
         hitBox.width=14*Game.SCALES; //20
         hitBox.height=10*Game.SCALES;//28
@@ -39,18 +36,17 @@ public class Player  extends Entitty{
         isPlayerMoving=false;
     }
     public void render(Graphics g, int xOfflevelset, int yOfflevelSet){
-        g.drawImage(Animations[player_action][aniIndex], (int)hitBox.x - xOffset -xOfflevelset ,(int) hitBox.y -yOffset -yOfflevelSet,width,height,null);
-        drawHitbox(g, xOfflevelset, yOfflevelSet);
+        g.drawImage(Animations[player_action][aniIndex], (int)hitBox.x - (xOffset * lastPlayerDirection) -xOfflevelset +leftxOffset ,(int) hitBox.y -yOffset -yOfflevelSet,width * lastPlayerDirection,height,null);
+//        drawHitbox(g, xOfflevelset, yOfflevelSet);
     }
 
     public void update(){
-        updatePos();
         updatePlayerAction();
         updateAnimation();
+        updatePos();
     }
-public void updatePos(){
+    public void updatePos(){
         isPlayerMoving=false;
-//        System.out.printf(Arrays.toString(new boolean[]{kiri, kanan, atas, bawah}));
         if (!kiri&&!kanan&&!atas&&!bawah){
             return;
         }
@@ -59,8 +55,12 @@ public void updatePos(){
 
         if (kiri && !kanan){
             xSpeed-=velocity;
+            this.lastPlayerDirection= Math.abs(this.lastPlayerDirection) * -1;
+            this.leftxOffset =30;
         } else if (!kiri && kanan) {
             xSpeed+=velocity;
+            this.lastPlayerDirection= Math.abs(this.lastPlayerDirection);
+            this.leftxOffset =0;
         }
 
         if (atas && !bawah){
@@ -69,12 +69,12 @@ public void updatePos(){
             ySpeed+=velocity;
         }
 
-        if (canMoveHere(hitBox.x +xSpeed,hitBox.y+ySpeed,  hitBox.width,hitBox.height,levelData)){
+        if (canMoveHere(hitBox.x +xSpeed,hitBox.y+ySpeed,  hitBox.width,hitBox.height,levelDataList)){
             hitBox.y+=ySpeed;
             hitBox.x+=xSpeed;
             isPlayerMoving=true;
         }
-}
+    }
     public void  loadAnimations() {
         BufferedImage img = LoadSave.getAtlasSprite(playerAtlas);
         Animations = new BufferedImage[9][7];
@@ -84,6 +84,7 @@ public void updatePos(){
             }
         }
     }
+
     private void updatePlayerAction() {
         int startAni = player_action;
         if (isPlayerMoving){
@@ -112,13 +113,20 @@ public void updatePos(){
         }
     }
 
-    public void getSpriteDataOnLocation(){
+    public void setLevelData(ArrayList<int[][]> levelDataList) {
+        this.levelDataList = levelDataList;
+    }
+
+    public int[] getSpriteDataOnLocation(){
         int xSprite = (int) Math.floor(hitBox.x / Game.TILES_SIZE);
         int ySprite = (int) Math.floor(hitBox.y /Game.TILES_SIZE);
-//        System.out.println(ySprite);
-//        System.out.println(xSprite);
+        System.out.println(levelDataList.get(0)[ySprite][xSprite]);
+        return new int[]{ySprite,xSprite};
+    }
 
-        System.out.println(levelData[ySprite][xSprite]);
+    public void resetPlayerPos(int[]spawnCord){
+        this.hitBox.x=spawnCord[1] * Game.TILES_SIZE +10;
+        this.hitBox.y=spawnCord[0]* Game.TILES_SIZE+10;
     }
 
     public void setAniIndex(int num){

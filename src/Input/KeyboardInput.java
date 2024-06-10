@@ -1,11 +1,10 @@
 package Input;
+import Gamestate.GameState;
+import Gamestate.Menu;
 import Main.GamePanel;
-import utils.Helpers;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import static utils.Helpers.devMode;
+import java.security.Key;
 
 public class KeyboardInput implements KeyListener {
     private GamePanel gamePanel;
@@ -19,55 +18,36 @@ public class KeyboardInput implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() ==   KeyEvent.VK_W){
-            gamePanel.getGame().getPlayer().setAtas(true);
+        switch (GameState.state){
+            case PlAYING:{
+                gamePanel.getGame().getPlaying().keyPressed(e);
+            break;
+            }
+            case MENU:{
+                gamePanel.getGame().getMenu().keyPressed(e);
+                break;
+            }
         }
 
-        if (e.getKeyCode() ==   KeyEvent.VK_A){
-            gamePanel.getGame().getPlayer().setKiri(true);
+        if (e.getKeyCode() == KeyEvent.VK_ENTER){
+            GameState.state = GameState.PlAYING;
+        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            GameState.state = GameState.MENU;
         }
 
-        if (e.getKeyCode() ==   KeyEvent.VK_S){
-            gamePanel.getGame().getPlayer().setBawah(true);
-        }
-
-        if (e.getKeyCode() ==   KeyEvent.VK_D){
-            gamePanel.getGame().getPlayer().setKanan(true);
-        }
-        if (e.getKeyCode()== KeyEvent.VK_E){
-            gamePanel.getGame().getPlayer().getSpriteDataOnLocation();
-        }
-
-        if (e.getKeyCode()== KeyEvent.VK_Q){
-            if (devMode) {
-                Helpers.setDevMode(false);
-            }else {
-                Helpers.setDevMode(true);
-            };
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() ==   KeyEvent.VK_W){
-            gamePanel.getGame().getPlayer().setAtas(false);
+        switch (GameState.state){
+            case PlAYING:{
+                gamePanel.getGame().getPlaying().keyReleased(e);
+                break;
+            }
+            case MENU:{
+                gamePanel.getGame().getMenu().keyReleased(e);
+                break;
+            }
         }
-
-        if (e.getKeyCode() ==   KeyEvent.VK_A){
-            gamePanel.getGame().getPlayer().setKiri(false);
-
-        }
-
-        if (e.getKeyCode() ==   KeyEvent.VK_S){
-            gamePanel.getGame().getPlayer().setBawah(false);
-
-        }
-
-        if (e.getKeyCode() ==   KeyEvent.VK_D){
-            gamePanel.getGame().getPlayer().setKanan(false);
-        }
-        gamePanel.getGame().getPlayer().SetisPlayerMoving(false);
-        gamePanel.getGame().getPlayer().setAniIndex(0);
-
     }
 }

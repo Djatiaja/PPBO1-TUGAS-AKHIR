@@ -13,14 +13,14 @@ public class MouseInput implements MouseListener, MouseMotionListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton()==MouseEvent.BUTTON1){
-            gamePanel.getGame().getPlayer().setAttacking(true);
-            System.out.println("Atas "+gamePanel.getGame().getPlayer().isAtas());
-            System.out.println("Bawah "+gamePanel.getGame().getPlayer().isBawah());
-            System.out.println("Kiri "+gamePanel.getGame().getPlayer().isKiri());
-            System.out.println("Kanan "+gamePanel.getGame().getPlayer().isKanan());
-
-        }
+//        if (e.getButton()==MouseEvent.BUTTON1){
+//            gamePanel.getGame().getPlayer().setAttacking(true);
+//            System.out.println("Atas "+gamePanel.getGame().getPlayer().isAtas());
+//            System.out.println("Bawah "+gamePanel.getGame().getPlayer().isBawah());
+//            System.out.println("Kiri "+gamePanel.getGame().getPlayer().isKiri());
+//            System.out.println("Kanan "+gamePanel.getGame().getPlayer().isKanan());
+//
+//        }
     }
 
     @Override

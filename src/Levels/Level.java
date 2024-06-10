@@ -1,33 +1,45 @@
 package Levels;
 
-import utils.LoadSave;
-
-import java.awt.datatransfer.FlavorEvent;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Level {
     private int[][] levelData;
     private int[] spawnCord;
-    public Level(int[][] levelData, int[] spawnCord ){
-        this.levelData = levelData;
-        printDatainINT();
+    private ArrayList<int[][]> levelDataList = new ArrayList<>();
+    BufferedImage[] levelSprite;
+    public Level( int[] spawnCord , BufferedImage[] levelSprite){
+//        printDatainINT();
         this.spawnCord = spawnCord;
+        this.levelSprite = levelSprite;
     }
-    public int getSpriteIndex(int x, int y){
+    public int getSpriteIndex(int[][] levelData,int x, int y){
         return levelData[x][y];
     }
 
+    public void addLevelData(int[][] levelData){
+        levelDataList.add(levelData);
+    }
     public void printDatainINT(){
 //Debugging
         for (int i = 0; i < levelData.length; i++) {
             String data = "";
-//            for (int j = 0; j < levelData[0].length; j++) {
-//                int temp = levelData[i][j];
-//                data += temp+" ";
-//            }
             System.out.println(Arrays.toString(levelData[i]));
-
         }
+    }
+
+    public void printLevelData(){
+        for (int[][] levelData:levelDataList) {
+            for (int i = 0; i < levelData.length; i++) {
+                String data = "";
+                System.out.println(Arrays.toString(levelData[i]));
+            }
+        }
+    }
+
+    public ArrayList<int[][]> getLevelDataList() {
+        return levelDataList;
     }
 
     public int[] getSpawnCord() {
@@ -35,6 +47,10 @@ public class Level {
     }
 
     public int[][] getLevelData(){
+        return levelData;
+    }
+
+    public int[][] getCurrentLevelData() {
         return levelData;
     }
 }

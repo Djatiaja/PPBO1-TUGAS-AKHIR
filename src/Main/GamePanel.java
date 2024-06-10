@@ -1,15 +1,8 @@
 package Main;
-
-
 import Input.KeyboardInput;
 import Input.MouseInput;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
-
 import static Main.Game.GAME_HEIGHT;
 import static Main.Game.GAME_WIDTH;
 
@@ -34,7 +27,9 @@ public class GamePanel extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        game.render(g);
+        Graphics2D g2 = (Graphics2D)g;
+        game.render(g2);
+        g2.dispose();
     }
     public Game getGame(){
         return this.game;
