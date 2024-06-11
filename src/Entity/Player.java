@@ -37,7 +37,7 @@ public class Player  extends Entitty{
     }
     public void render(Graphics g, int xOfflevelset, int yOfflevelSet){
         g.drawImage(Animations[player_action][aniIndex], (int)hitBox.x - (xOffset * lastPlayerDirection) -xOfflevelset +leftxOffset ,(int) hitBox.y -yOffset -yOfflevelSet,width * lastPlayerDirection,height,null);
-//        drawHitbox(g, xOfflevelset, yOfflevelSet);
+        drawHitbox(g, xOfflevelset, yOfflevelSet);
     }
 
     public void update(){

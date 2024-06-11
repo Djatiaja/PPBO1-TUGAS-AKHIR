@@ -58,7 +58,7 @@ public class LoadSave {
 
     public static int[][] getMapdata(){
 
-        int[][] levelData = new int[40][27];
+        int[][] levelData = new int[18][27];
         for (int i = 0; i < 18; i++) {
             for (int j = 0; j < 27; j++) {
                 levelData[i][j] = i*27 + j;

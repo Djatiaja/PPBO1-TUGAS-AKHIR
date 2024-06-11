@@ -5,7 +5,6 @@ import utils.LoadSave;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-
 import static utils.LoadSave.getMapdata;
 import static utils.LoadSave.levelAtlasCity;
 
